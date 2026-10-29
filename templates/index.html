@@ -9,6 +9,8 @@
 <body>
     <div class="container">
         <h1>Halloween Monsters</h1>
+        <h1>HOLA</h1>
+        <img src="{{ url_for('static', filename='img/fantasma.jpg') }}" alt="Halloween Monster" class="monster-image">  
 
         <form action="/monster" method="post">
             <label>Nombre <input type="text" name="name" required></label>
@@ -28,6 +30,7 @@
             </tr>
             {% endfor %}
         </table>
+        <img src="{{ url_for('static', filename='img/images.jpg') }}" alt="Halloween Monster" class="monster-image">
     </div>
 </body>
 </html>
