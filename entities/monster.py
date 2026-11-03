@@ -23,6 +23,8 @@ class Monster:
         cursor = connection.cursor()
         cursor.execute('INSERT INTO monster (name, power) VALUES (%s, %s)',
                        (self.name, self.power))
+        nuevo_id = cursor.lastrowid
         connection.commit()
         cursor.close()
         connection.close()
+        return nuevo_id
