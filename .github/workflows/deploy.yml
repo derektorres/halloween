@@ -8,6 +8,27 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root_test_password
+          MYSQL_DATABASE: halloween_test
+          MYSQL_USER: halloween_test
+          MYSQL_PASSWORD: halloween_test_password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot_test_password"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_USER: halloween_test
+      DB_PASSWORD: halloween_test_password
+      DB_NAME: halloween_test
     steps:
       - uses: actions/checkout@v4
 
@@ -21,6 +42,13 @@ jobs:
 
       - name: Check that the app loads
         run: python -c "import app"
+
+      - name: Create test table
+        run: >-
+          python -c "import mysql.connector; c=mysql.connector.connect(host='127.0.0.1', port=3306, user='halloween_test', password='halloween_test_password', database='halloween_test'); cur=c.cursor(); cur.execute('CREATE TABLE monster (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, power VARCHAR(255) NOT NULL)'); c.close()"
+
+      - name: Run tests
+        run: pytest -q
 
   deploy:
     needs: check
