@@ -48,7 +48,7 @@ jobs:
           python -c "import mysql.connector; c=mysql.connector.connect(host='127.0.0.1', port=3306, user='halloween_test', password='halloween_test_password', database='halloween_test'); cur=c.cursor(); cur.execute('CREATE TABLE monster (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, power VARCHAR(255) NOT NULL)'); c.close()"
 
       - name: Run tests
-        run: pytest -q
+        run: python -m pytest -q
 
   deploy:
     needs: check
